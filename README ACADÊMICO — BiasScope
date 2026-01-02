@@ -1,0 +1,42 @@
+README ACADÊMICO — BiasScope
+Detector de Viés Linguístico em Textos Gerados por IA
+# BiasScope  
+Ferramenta de Detecção de Viés Linguístico em Textos de IA
+
+## Resumo
+O BiasScope é uma ferramenta analítica que identifica padrões de viés linguístico em textos gerados por sistemas de Inteligência Artificial. O projeto foca em uma abordagem explicável e ética para apoiar o desenvolvimento de sistemas mais justos e inclusivos.
+
+## Contexto de Pesquisa
+Modelos de linguagem tendem a reproduzir vieses presentes nos dados de treinamento. O BiasScope investiga a detecção baseada em regras como estratégia inicial para conscientização e mitigação desses vieses.
+
+## Funcionalidades
+- Detecção de indicadores de viés de gênero
+- Identificação de generalizações linguísticas
+- Geração de pontuação de viés
+- Recomendações para reformulação ética do texto
+
+## Aspectos Técnicos
+- Implementação em Python
+- API simples e modular com FastAPI
+- Análise baseada em regras interpretáveis
+
+## Considerações Éticas
+- Ênfase na prevenção de danos sociais
+- Ferramenta voltada à auditoria, não à censura
+- Priorização de explicabilidade sobre abordagens opacas
+
+## Limitações
+A detecção de viés depende do contexto. Abordagens baseadas em regras podem gerar falsos positivos, sendo recomendada a validação humana.
+
+## Aplicações
+- Pipelines de Responsible AI
+- Ferramentas educacionais sobre ética em IA
+- Auditoria de conteúdo gerado por modelos de linguagem
+
+## Trabalhos Futuros
+- Suporte multilíngue
+- Análise contextual mais profunda
+- Métricas quantitativas de viés
+
+## Licença
+Uso acadêmico e educacional.
