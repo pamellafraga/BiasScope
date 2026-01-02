@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiasScope - Detector de Viés Linguístico</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00f5ff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradient)" stroke-width="3" opacity="0.3"/>
+                        <path d="M 30 50 L 45 35 L 55 45 L 70 30" stroke="url(#logoGradient)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="50" cy="50" r="8" fill="url(#logoGradient)"/>
+                        <circle cx="30" cy="50" r="5" fill="url(#logoGradient)" opacity="0.6"/>
+                        <circle cx="70" cy="30" r="5" fill="url(#logoGradient)" opacity="0.6"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>BiasScope</h1>
+                    <p class="subtitle">Detector de Viés Linguístico em IA</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalAnalyses">0</span>
+                    <span class="stat-label">Análises</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="biasDetected">0</span>
+                    <span class="stat-label">Vieses Detectados</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="analysis-section">
+                <div class="card input-card">
+                    <div class="card-header">
+                        <h2>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Insira o Texto para Análise
+                        </h2>
+                        <div class="char-counter">
+                            <span id="charCount">0</span> caracteres
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <textarea 
+                            id="inputText" 
+                            placeholder="Digite ou cole o texto gerado por IA que você deseja analisar...&#10;&#10;Exemplo: 'Todos os homens são bons em matemática, enquanto as mulheres sempre preferem artes.'"
+                            rows="8"
+                        ></textarea>
+                        <div class="example-chips">
+                            <span class="chip-label">Exemplos rápidos:</span>
+                            <button class="chip" onclick="loadExample(1)">Exemplo 1</button>
+                            <button class="chip" onclick="loadExample(2)">Exemplo 2</button>
+                            <button class="chip" onclick="loadExample(3)">Exemplo 3</button>
+                            <button class="chip" onclick="loadExample(4)">Exemplo 4</button>
+                        </div>
+                        <button class="analyze-btn" onclick="analyzeText()">
+                            <span class="btn-icon">🔍</span>
+                            <span class="btn-text">Analisar Viés</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card results-card" id="resultsCard" style="display: none;">
+                    <div class="card-header">
+                        <h2>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Resultados da Análise
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="score-display">
+                            <div class="score-circle">
+                                <svg class="score-ring" viewBox="0 0 200 200">
+                                    <circle class="score-ring-bg" cx="100" cy="100" r="85" />
+                                    <circle class="score-ring-fill" id="scoreRing" cx="100" cy="100" r="85" />
+                                </svg>
+                                <div class="score-value">
+                                    <span id="scoreValue">0</span>
+                                    <span class="score-label">Vieses</span>
+                                </div>
+                            </div>
+                            <div class="score-info">
+                                <h3 id="scoreTitle">Análise Completa</h3>
+                                <p id="scoreDescription">Seu texto foi analisado em busca de vieses linguísticos</p>
+                            </div>
+                        </div>
+
+                        <div class="findings-section" id="findingsSection">
+                            <h3>Vieses Identificados</h3>
+                            <div id="findingsList" class="findings-list"></div>
+                        </div>
+
+                        <div class="recommendation-section">
+                            <div class="recommendation-icon">💡</div>
+                            <div class="recommendation-content">
+                                <h3>Recomendação</h3>
+                                <p id="recommendationText"></p>
+                            </div>
+                        </div>
+
+                        <button class="secondary-btn" onclick="resetAnalysis()">
+                            Nova Análise
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="info-sidebar">
+                <div class="card info-card">
+                    <div class="card-header">
+                        <h3>Sobre o BiasScope</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Sistema avançado de detecção de vieses linguísticos em textos gerados por IA.</p>
+                        <div class="features-list">
+                            <div class="feature-item">
+                                <span class="feature-icon">🎯</span>
+                                <div>
+                                    <strong>Detecção Precisa</strong>
+                                    <p>Identifica vieses de gênero e generalizações</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">⚡</span>
+                                <div>
+                                    <strong>Análise Instantânea</strong>
+                                    <p>Resultados em tempo real</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon">🌐</span>
+                                <div>
+                                    <strong>IA Ética</strong>
+                                    <p>Promove inclusão e diversidade</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card categories-card">
+                    <div class="card-header">
+                        <h3>Categorias Detectadas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="category-item">
+                            <div class="category-header">
+                                <span class="category-icon">👥</span>
+                                <strong>Viés de Gênero</strong>
+                            </div>
+                            <div class="category-keywords">
+                                <span class="keyword">mulher</span>
+                                <span class="keyword">homem</span>
+                                <span class="keyword">menina</span>
+                                <span class="keyword">menino</span>
+                            </div>
+                        </div>
+                        <div class="category-item">
+                            <div class="category-header">
+                                <span class="category-icon">🔄</span>
+                                <strong>Generalização</strong>
+                            </div>
+                            <div class="category-keywords">
+                                <span class="keyword">todos</span>
+                                <span class="keyword">sempre</span>
+                                <span class="keyword">nunca</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 BiasScope | Promovendo IA Ética e Inclusiva</p>
+            <div class="footer-links">
+                <a href="/docs" target="_blank">API Docs</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+        </footer>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <div class="spinner-ring"></div>
+            <p>Analisando texto...</p>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
